@@ -67,7 +67,15 @@ log_info "Systemd Service:  ${BOLD}${SERVICE_NAME}${NC}"
 echo ""
 
 # ------------------------------------------------------------------------------
-# 2. SSH Connection & Remote Execution
+# 2. Local Push to GitHub
+# ------------------------------------------------------------------------------
+log_info "Pushing branch '${BRANCH}' to GitHub via SSH..."
+git push origin "${BRANCH}"
+log_success "Branch '${BRANCH}' pushed to GitHub successfully!"
+echo ""
+
+# ------------------------------------------------------------------------------
+# 3. SSH Connection & Remote Execution
 # ------------------------------------------------------------------------------
 log_info "Connecting to server via SSH (${SSH_HOST})..."
 

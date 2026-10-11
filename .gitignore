@@ -1,0 +1,12 @@
+# Node dependencies and build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Python artifacts
+backend/__pycache__/
+*.pyc
+
+# Environment & Logs
+*.log
+.env

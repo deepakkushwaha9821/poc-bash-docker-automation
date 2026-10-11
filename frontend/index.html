@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Automated Docker Deployment POC</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="badge">POC Environment</div>
+        <h1>Automated Docker Deployment</h1>
+        <p class="subtitle">Bash CI/CD & Service Reload Proof of Concept</p>
+      </header>
+
+      <main>
+        <section class="card">
+          <h2>Application Status</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span class="label">Backend Status</span>
+              <span id="backend-status" class="value loading">Checking...</span>
+            </div>
+            <div class="status-item">
+              <span class="label">Current Branch</span>
+              <span id="branch-info" class="value">main</span>
+            </div>
+            <div class="status-item">
+              <span class="label">Last Health Check</span>
+              <span id="last-checked" class="value">-</span>
+            </div>
+          </div>
+          <button id="btn-check" class="btn">Test Health Check (/api/health)</button>
+        </section>
+
+        <section class="card">
+          <h2>Deployment Pipeline Overview</h2>
+          <ul class="steps-list">
+            <li><span class="step-num">1</span> Bash Deployment Script (<code>./deploy &lt;branch&gt; &lt;host&gt;</code>)</li>
+            <li><span class="step-num">2</span> SSH Key Auth & Host Alias</li>
+            <li><span class="step-num">3</span> Container Access via <code>docker exec</code></li>
+            <li><span class="step-num">4</span> Git Checkout & Pull Origin</li>
+            <li><span class="step-num">5</span> Frontend Build (<code>npm ci &amp;&amp; npm run build</code>)</li>
+            <li><span class="step-num">6</span> Restricted Sudoers Configuration</li>
+            <li><span class="step-num">7</span> Service Restart (<code>sudo -n systemctl restart ...</code>)</li>
+          </ul>
+        </section>
+
+        <section class="card console-card">
+          <h2>Live Response Log</h2>
+          <pre id="log-output">Awaiting health check...</pre>
+        </section>
+      </main>
+
+      <footer>
+        <p>Proof of Concept by <strong>deepakkushwaha9821</strong></p>
+      </footer>
+    </div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

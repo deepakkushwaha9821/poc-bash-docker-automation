@@ -6,8 +6,7 @@ SSH_HOST="${2#@}"
 CONTAINER_NAME="poc-deploy-app"
 SERVICE_NAME="dummy-app.service"
 
-echo "=== 1. Switch to ${BRANCH} and push to GitHub ==="
-git checkout "${BRANCH}"
+echo "=== 1. Push ${BRANCH} to GitHub ==="
 git push origin "${BRANCH}"
 
 echo "=== 2. Deploying to ${SSH_HOST} ==="

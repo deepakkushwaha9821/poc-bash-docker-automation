@@ -12,7 +12,7 @@ async function fetchHealth() {
     const data = await res.json();
 
     const branchEl = document.getElementById('branch-info');
-    if (branchEl) branchEl.textContent = 'feat/db-health-check';
+    if (branchEl) branchEl.textContent = 'poc-git';
 
     statusEl.className = 'value healthy';
     statusEl.textContent = data.database ? `Active (${data.database})` : 'Active (Healthy)';

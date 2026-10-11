@@ -28,12 +28,12 @@ RUN useradd -m -s /bin/bash ubuntu
 
 # Configure restricted passwordless sudo for deploy user
 # Only allows systemctl commands for dummy-app.service
-COPY systemd/sudoers-deploy-service /etc/sudoers.d/deploy-service
+COPY etc/sudoers.d/deploy-service /etc/sudoers.d/deploy-service
 RUN chmod 0440 /etc/sudoers.d/deploy-service && \
     visudo -cf /etc/sudoers.d/deploy-service
 
 # Copy systemd service unit file to /etc/systemd/system/
-COPY systemd/dummy-app.service /etc/systemd/system/dummy-app.service
+COPY etc/systemd/system/dummy-app.service /etc/systemd/system/dummy-app.service
 RUN chmod 644 /etc/systemd/system/dummy-app.service && \
     systemctl enable dummy-app.service
 

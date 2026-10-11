@@ -19,9 +19,12 @@ poc-bash-docker-automation/
 │   └── src/
 │       ├── main.js           # Live API health check & UI logic
 │       └── style.css         # Modern responsive styling
-├── systemd/
-│   ├── dummy-app.service     # Systemd service unit → copied to /etc/systemd/system/
-│   └── sudoers-deploy-service # Sudoers rule → copied to /etc/sudoers.d/deploy-service
+├── etc/
+│   ├── systemd/
+│   │   └── system/
+│   │       └── dummy-app.service       # Systemd service unit → copied to /etc/systemd/system/
+│   └── sudoers.d/
+│       └── deploy-service              # Sudoers rule → copied to /etc/sudoers.d/deploy-service
 ├── .gitignore
 └── README.md
 ```
@@ -35,7 +38,7 @@ poc-bash-docker-automation/
 | **3** | **Connect to Server** | SSH session → `docker exec -i -u ubuntu poc-deploy-app` inside container | ✅ Verified |
 | **4** | **Git Operations** | `cd /app && git checkout <BRANCH> && git pull origin <BRANCH>` | ✅ Verified |
 | **5** | **Build Frontend** | `cd /app/frontend && npm ci && npm run build` producing `/app/frontend/dist` | ✅ Verified |
-| **6** | **Passwordless Sudo** | [`sudoers-deploy-service`](systemd/sudoers-deploy-service) → `/etc/sudoers.d/deploy-service` (via Dockerfile) | ✅ Verified |
+| **6** | **Passwordless Sudo** | [`etc/sudoers.d/deploy-service`](etc/sudoers.d/deploy-service) → `/etc/sudoers.d/deploy-service` (via Dockerfile) | ✅ Verified |
 | **7** | **Restart Service** | `sudo -n systemctl restart dummy-app.service` & verified with `systemctl status` + `curl /api/health` | ✅ Verified |
 
 ---
@@ -74,7 +77,7 @@ The [`Dockerfile`](Dockerfile) builds a self-contained image with:
 
 ## 🔒 Restricted Passwordless Sudo Rule
 
-Source file: [`systemd/sudoers-deploy-service`](systemd/sudoers-deploy-service)
+Source file: [`etc/sudoers.d/deploy-service`](etc/sudoers.d/deploy-service)
 Installed to: `/etc/sudoers.d/deploy-service` inside the container (via Dockerfile COPY)
 
 ```sudoers

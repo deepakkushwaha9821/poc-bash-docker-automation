@@ -1,0 +1,3 @@
+# Restricted sudoers rule allowing only systemctl commands for dummy-app.service
+# Validated with: visudo -cf /etc/sudoers.d/deploy-service
+ubuntu ALL=(ALL) NOPASSWD: /bin/systemctl restart dummy-app.service*, /usr/bin/systemctl restart dummy-app.service*, /bin/systemctl status dummy-app.service*, /usr/bin/systemctl status dummy-app.service*, /bin/systemctl is-active dummy-app.service*, /usr/bin/systemctl is-active dummy-app.service*

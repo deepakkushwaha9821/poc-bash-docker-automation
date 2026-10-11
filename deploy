@@ -125,6 +125,7 @@ sudo -n systemctl status "${SERVICE_NAME}" --no-pager
 
 # Step 5: Verification of HTTP Health Check Endpoint
 echo ">> [5/5] Testing HTTP health endpoint..."
+sleep 1
 if curl -sSf http://127.0.0.1:8000/api/health >/dev/null 2>&1; then
     echo "✓ Health check passed (HTTP 200 OK)!"
     curl -s http://127.0.0.1:8000/api/health

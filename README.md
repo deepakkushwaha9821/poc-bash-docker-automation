@@ -28,7 +28,7 @@ poc-bash-docker-automation/
 
 | Step | Requirement | Implementation | Status |
 |---|---|---|---|
-| **1** | **Bash Script** | `./deploy <branch> <ssh-host>` (e.g. `./deploy feat/db-health-check @ubuntu`) | ✅ Verified |
+| **1** | **Bash Script** | `./deploy <branch> <ssh-host>` (e.g. `./deploy poc-git @ubuntu`) | ✅ Verified |
 | **2** | **Configure SSH** | SSH key auth & `Host ubuntu` alias in `~/.ssh/config` without password prompt | ✅ Verified |
 | **3** | **Connect to Server** | SSH session connecting to server, executing into container via `docker exec -i -u ubuntu` | ✅ Verified |
 | **4** | **Git Operations** | `cd /app && git checkout <BRANCH> && git pull origin <BRANCH>` | ✅ Verified |
@@ -46,9 +46,9 @@ poc-bash-docker-automation/
 ```
 
 ### 2. Run Automated Deployment
-Deploy feature branch `feat/db-health-check`:
+Deploy feature branch `poc-git`:
 ```bash
-./deploy feat/db-health-check @ubuntu
+./deploy poc-git @ubuntu
 ```
 
 Deploy main branch `main`:
@@ -94,7 +94,7 @@ To push to GitHub under `deepakkushwaha9821`:
 ```bash
 git remote add origin https://github.com/deepakkushwaha9821/poc-bash-docker-automation.git
 git push -u origin main
-git push -u origin feat/db-health-check
+git push -u origin poc-git
 ```
 *(or via SSH: `git remote add origin git@github.com:deepakkushwaha9821/poc-bash-docker-automation.git`)*
 

@@ -26,7 +26,5 @@ async function fetchHealth() {
   }
 }
 
-document.getElementById('btn-check').addEventListener('click', fetchHealth);
-
 // Initial check on load
 fetchHealth();

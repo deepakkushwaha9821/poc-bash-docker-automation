@@ -85,13 +85,13 @@ fi
 echo "[REMOTE INFO] Target container '${CONTAINER_NAME}' is active."
 
 # Execute deployment operations inside the container using docker exec
-docker exec -i "${CONTAINER_NAME}" bash <<'INSIDE_CONTAINER'
+docker exec -i -u ubuntu -e BRANCH="${BRANCH}" -e SERVICE_NAME="${SERVICE_NAME}" "${CONTAINER_NAME}" bash <<'INSIDE_CONTAINER'
 set -euo pipefail
 
 echo "---------------- [Inside Container: ${CONTAINER_NAME}] ----------------"
 
 # Step 1: Git Operations
-echo ">> [1/4] Navigating to project directory & checking git state..."
+echo ">> [1/5] Navigating to project directory & checking git state..."
 cd /app
 git config --global --add safe.directory /app
 
@@ -106,7 +106,7 @@ else
 fi
 
 # Step 2: Build Frontend
-echo ">> [2/4] Navigating to frontend directory..."
+echo ">> [2/5] Navigating to frontend directory..."
 cd /app/frontend
 
 echo ">> Installing frontend dependencies (npm ci)..."
@@ -116,15 +116,15 @@ echo ">> Building frontend bundle (npm run build)..."
 npm run build
 
 # Step 3: Passwordless Sudo Service Restart
-echo ">> [3/4] Restarting systemd service via passwordless sudo..."
+echo ">> [3/5] Restarting systemd service via passwordless sudo..."
 sudo -n systemctl restart "${SERVICE_NAME}"
 
-# Step 4: Verification
-echo ">> [4/4] Verifying service status and health..."
-sudo -n systemctl is-active --quiet "${SERVICE_NAME}"
-echo "✓ Service '${SERVICE_NAME}' is active and running!"
+# Step 4: Verification of Service Status
+echo ">> [4/5] Verifying service status with sudo -n systemctl status..."
+sudo -n systemctl status "${SERVICE_NAME}" --no-pager
 
-echo ">> Verifying HTTP health endpoint..."
+# Step 5: Verification of HTTP Health Check Endpoint
+echo ">> [5/5] Testing HTTP health endpoint..."
 if curl -sSf http://127.0.0.1:8000/api/health >/dev/null 2>&1; then
     echo "✓ Health check passed (HTTP 200 OK)!"
     curl -s http://127.0.0.1:8000/api/health

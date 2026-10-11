@@ -13,6 +13,7 @@ RUN apt-get update -qq && \
         curl \
         git \
         python3 \
+        openssh-client \
         ca-certificates \
         gnupg && \
     # Install Node.js 20.x from NodeSource

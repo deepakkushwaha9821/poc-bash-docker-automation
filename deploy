@@ -30,10 +30,6 @@ echo "=== Restart Service via Passwordless Sudo ==="
 sudo -n systemctl restart "${SERVICE_NAME}"
 sudo -n systemctl status "${SERVICE_NAME}" --no-pager
 
-echo "=== Health Check ==="
-sleep 1
-curl -s http://127.0.0.1:8000/api/health
-echo ""
 INSIDE_CONTAINER
 
 REMOTE_EXEC

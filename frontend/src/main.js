@@ -1,6 +1,5 @@
 async function fetchHealth() {
   const statusEl = document.getElementById('backend-status');
-  const lastCheckedEl = document.getElementById('last-checked');
   const logOutputEl = document.getElementById('log-output');
 
   statusEl.className = 'value loading';
@@ -16,12 +15,10 @@ async function fetchHealth() {
 
     statusEl.className = 'value healthy';
     statusEl.textContent = data.message ? `Active (${data.message})` : 'Active';
-    lastCheckedEl.textContent = new Date().toLocaleTimeString();
     logOutputEl.textContent = JSON.stringify(data, null, 2);
   } catch (err) {
     statusEl.className = 'value error';
     statusEl.textContent = 'Offline / Error';
-    lastCheckedEl.textContent = new Date().toLocaleTimeString();
     logOutputEl.textContent = `Error connecting to backend: ${err.message}`;
   }
 }

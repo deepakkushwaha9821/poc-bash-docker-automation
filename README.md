@@ -7,7 +7,7 @@ Proof of concept for automated deployment using Bash, Docker, SSH key authentica
 ```
 poc-bash-docker-automation/
 ├── Dockerfile                # Docker image with Node 20, Python3, Git, sudo, systemd service
-├── deploy.sh                 # Bash deployment script (main automation entry point)
+├── deploy                    # Bash deployment script (main automation entry point)
 ├── setup-container.sh        # Builds Docker image & starts container
 ├── backend/
 │   └── server.py             # Python HTTP API server (/api/health, /api/info, static assets)
@@ -30,7 +30,7 @@ poc-bash-docker-automation/
 
 | Step | Requirement | Implementation | Status |
 |---|---|---|---|
-| **1** | **Bash Script** | [`deploy.sh`](deploy.sh) accepts branch and host arguments (e.g. `./deploy.sh poc-git @ubuntu`) | ✅ Verified |
+| **1** | **Bash Script** | [`deploy`](deploy) accepts branch and host arguments (e.g. `./deploy poc-git @ubuntu`) | ✅ Verified |
 | **2** | **Configure SSH** | SSH key auth & `Host ubuntu` alias in `~/.ssh/config` without password prompt | ✅ Verified |
 | **3** | **Connect to Server** | SSH session → `docker exec -i -u ubuntu poc-deploy-app` inside container | ✅ Verified |
 | **4** | **Git Operations** | `cd /app && git checkout <BRANCH> && git pull origin <BRANCH>` | ✅ Verified |
@@ -51,7 +51,7 @@ This runs `docker build` using the [`Dockerfile`](Dockerfile), then starts the c
 ### 2. Run Automated Deployment
 Deploy feature branch `poc-git`:
 ```bash
-./deploy.sh poc-git @ubuntu
+./deploy poc-git @ubuntu
 ```
 
 Deploy main branch:

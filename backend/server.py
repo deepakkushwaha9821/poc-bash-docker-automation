@@ -20,18 +20,7 @@ class AppRequestHandler(SimpleHTTPRequestHandler):
         if self.path == "/api/health":
             self.send_json_response(200, {
                 "status": "healthy",
-                "service": "dummy-app",
-                "database": "connected (mock DB pool ready)",
-                "timestamp": datetime.utcnow().isoformat() + "Z"
-            })
-            return
-
-        if self.path == "/api/db-health":
-            self.send_json_response(200, {
-                "status": "up",
-                "database": "postgres",
-                "latency_ms": 1.2,
-                "timestamp": datetime.utcnow().isoformat() + "Z"
+                "message": "hi this is python"
             })
             return
 

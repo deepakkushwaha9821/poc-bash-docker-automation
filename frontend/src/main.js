@@ -15,7 +15,7 @@ async function fetchHealth() {
     if (branchEl) branchEl.textContent = 'poc-git';
 
     statusEl.className = 'value healthy';
-    statusEl.textContent = data.database ? `Active (${data.database})` : 'Active (Healthy)';
+    statusEl.textContent = data.message ? `Active (${data.message})` : 'Active';
     lastCheckedEl.textContent = new Date().toLocaleTimeString();
     logOutputEl.textContent = JSON.stringify(data, null, 2);
   } catch (err) {

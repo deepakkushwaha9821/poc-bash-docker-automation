@@ -18,28 +18,83 @@ poc-bash-docker-automation/
 │       └── style.css         # Modern responsive styling
 ├── systemd/
 │   └── dummy-app.service     # Systemd service unit for systemctl management
+├── deploy                    # Automated Bash deployment pipeline script
+├── setup-container.sh        # Container provisioning & environment setup script
 ├── .gitignore
 └── README.md
 ```
 
-## 🚀 Components
+## 🛠️ Architecture & Implemented Plan
 
-1. **Backend**: Python 3 HTTP service exposing:
-   - `GET /api/health`: Health status endpoint.
-   - `GET /api/info`: Service metadata and frontend build detection.
-   - Static asset serving for `frontend/dist`.
-2. **Frontend**: Vite-based SPA supporting:
-   - Fast, reproducible dependency installation via `npm ci`.
-   - Production bundle output via `npm run build`.
-3. **Service Management**:
-   - `dummy-app.service` systemd unit configured for zero-downtime reloads via `sudo -n systemctl restart dummy-app.service`.
+| Step | Requirement | Implementation | Status |
+|---|---|---|---|
+| **1** | **Bash Script** | `./deploy <branch> <ssh-host>` (e.g. `./deploy feat/db-health-check @ubuntu`) | ✅ Verified |
+| **2** | **Configure SSH** | SSH key auth & `Host ubuntu` alias in `~/.ssh/config` without password prompt | ✅ Verified |
+| **3** | **Connect to Server** | SSH session connecting to server, executing into container via `docker exec -i -u ubuntu` | ✅ Verified |
+| **4** | **Git Operations** | `cd /app && git checkout <BRANCH> && git pull origin <BRANCH>` | ✅ Verified |
+| **5** | **Build Frontend** | `cd /app/frontend && npm ci && npm run build` producing `/app/frontend/dist` | ✅ Verified |
+| **6** | **Passwordless Sudo** | Restricted `/etc/sudoers.d/deploy-service` rule allowing only `systemctl` for `dummy-app.service` | ✅ Verified |
+| **7** | **Restart Service** | `sudo -n systemctl restart dummy-app.service` & verified with `systemctl status` + `curl /api/health` | ✅ Verified |
 
-## 🔄 Upcoming POC Pipeline Steps
+---
 
-1. **Bash Deployment Script**: `./deploy <branch> <ssh-host>`
-2. **SSH Authentication**: Passwordless SSH key alias (`~/.ssh/config`).
-3. **Docker Execution**: Running commands inside target Docker container via `docker exec`.
-4. **Git Operations**: `git checkout <branch>` & `git pull origin <branch>`.
-5. **Frontend Build**: `npm ci && npm run build`.
-6. **Passwordless Sudo**: `/etc/sudoers.d/deploy-service` rule for restricted `systemctl restart`.
-7. **Service Verification**: Health check validation after reload.
+## 🚀 How to Run the POC
+
+### 1. Ensure the Target Container is Running
+```bash
+./setup-container.sh
+```
+
+### 2. Run Automated Deployment
+Deploy feature branch `feat/db-health-check`:
+```bash
+./deploy feat/db-health-check @ubuntu
+```
+
+Deploy main branch `main`:
+```bash
+./deploy main @ubuntu
+```
+
+---
+
+## 🔒 Security: Restricted Passwordless Sudo Rule
+
+Located inside the container at `/etc/sudoers.d/deploy-service`:
+```sudoers
+# Restricted sudoers rule allowing only systemctl commands for dummy-app.service
+ubuntu ALL=(ALL) NOPASSWD: /bin/systemctl restart dummy-app.service*, /usr/bin/systemctl restart dummy-app.service*, /bin/systemctl status dummy-app.service*, /usr/bin/systemctl status dummy-app.service*, /bin/systemctl is-active dummy-app.service*, /usr/bin/systemctl is-active dummy-app.service*
+```
+- Validated via `visudo -cf /etc/sudoers.d/deploy-service`.
+- Allows `sudo -n systemctl restart dummy-app.service` without password.
+- Blocks any other service or unauthorized command (prompts for password / denied).
+
+---
+
+## 🔑 SSH Configuration
+
+Configured in `~/.ssh/config`:
+```sshconfig
+Host ubuntu
+    HostName 127.0.0.1
+    User deepak
+    IdentityFile ~/.ssh/id_rsa
+    StrictHostKeyChecking accept-new
+```
+Enables daily zero-password connections for the deployment pipeline:
+```bash
+ssh ubuntu "echo OK"
+```
+
+---
+
+## 📦 GitHub Repository Setup
+
+To push to GitHub under `deepakkushwaha9821`:
+```bash
+git remote add origin https://github.com/deepakkushwaha9821/poc-bash-docker-automation.git
+git push -u origin main
+git push -u origin feat/db-health-check
+```
+*(or via SSH: `git remote add origin git@github.com:deepakkushwaha9821/poc-bash-docker-automation.git`)*
+

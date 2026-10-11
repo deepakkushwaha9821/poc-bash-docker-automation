@@ -11,8 +11,11 @@ async function fetchHealth() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
+    const branchEl = document.getElementById('branch-info');
+    if (branchEl) branchEl.textContent = 'feat/db-health-check';
+
     statusEl.className = 'value healthy';
-    statusEl.textContent = 'Active (Healthy)';
+    statusEl.textContent = data.database ? `Active (${data.database})` : 'Active (Healthy)';
     lastCheckedEl.textContent = new Date().toLocaleTimeString();
     logOutputEl.textContent = JSON.stringify(data, null, 2);
   } catch (err) {

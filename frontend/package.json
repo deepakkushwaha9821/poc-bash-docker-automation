@@ -1,5 +1,5 @@
 {
-  "name": "dummy-frontend",
+  "name": "poc-bash-docker-automation",
   "private": true,
   "version": "1.0.0",
   "type": "module",

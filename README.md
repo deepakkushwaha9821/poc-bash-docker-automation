@@ -1,11 +1,11 @@
-# Automated Docker Deployment POC (`docker-bash-deploy-poc`)
+# POC of Bash and Docker Automation (`poc-bash-docker-automation`)
 
 Proof of concept dummy project for automated deployment using Bash, SSH key authentication, Docker container execution, Vite frontend builds, and passwordless sudo service reloads.
 
 ## 📁 Project Structure
 
 ```
-docker-bash-deploy-poc/
+poc-bash-docker-automation/
 ├── backend/
 │   └── server.py             # Lightweight HTTP API & static asset server
 ├── frontend/
